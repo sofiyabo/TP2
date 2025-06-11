@@ -41,18 +41,10 @@ class PokemonInfo{ // posee la info (composicion?)
     array<int,3> experienciaProximoNivel; // uso array porque hay un numero fijo de elementos
     
     public:
-    PokemonInfo(string t, string descr, unordered_map<string, int> ataques, array<int,3>& experiencia) : tipo(t), descripcion(descr) {}
+    PokemonInfo(string t, string descr, unordered_map<string, int> ataques, array<int,3>& experiencia) : tipo(t), descripcion(descr), ataquesDisponiblesPorNivel(ataques), experienciaProximoNivel(experiencia) {}
     PokemonInfo(){}
-    /*    
-    string getTipo() const;
-    string getDescrpcion() const;
-    string getAtaquesString() const; //como imprimir unordered_map?
-    string getExperienciaProximoNivelString() const;
-    */
 
     friend ostream& operator<<(ostream& os, const PokemonInfo& info); //sobrecarga usando friend
-
-    
 
 
 };
@@ -74,6 +66,6 @@ class Pokedex{ // contenedor principal para la info --> Composicion
 
     void agregarPokemon(const Pokemon& poke, const PokemonInfo& poke_info);
     void mostrar(const Pokemon& poke) const; //funciona como un search + imprimir
-    //void mostrarTodos();
+    void mostrarTodos() const;
 };
 

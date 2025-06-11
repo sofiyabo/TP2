@@ -11,7 +11,7 @@ ostream& operator<<(ostream& os, const PokemonInfo& poke_info){
 
     os << "Experiencia por nivel:\n";
     for(int i = 1; i<4; i++){
-        os << "Nivel " << i <<": " << poke_info.experienciaProximoNivel[i-1]<< "de experiencia\n";
+        os << "Nivel " << i <<": " << poke_info.experienciaProximoNivel[i-1]<< " de experiencia\n";
 
     }
     return os;
@@ -34,3 +34,10 @@ void Pokedex::mostrar(const Pokemon& poke) const{
 
 }
 
+void Pokedex::mostrarTodos() const {
+    for (const auto& poke : pokedex) { // Itera sobre cada elemento en el mapa
+        cout<< "Pokemon: " << poke.first.getNombre()<< "\n";
+        mostrar(poke.first); // Llama a `mostrar()` pasando la clave (Pokemon)
+        cout<<"\n";
+    }
+}
