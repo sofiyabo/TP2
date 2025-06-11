@@ -2,8 +2,15 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <array>
 
 using namespace std;
+/*
+Consultas:
+    - El pokemon que se busca puede bbuscarse con experiencia diferente a la guardada?
+*/
+
+//Cada tipo de Pokemon tiene una información específica y única.
 
 class Pokemon{ // del que se quiere la info
     private:
@@ -11,11 +18,18 @@ class Pokemon{ // del que se quiere la info
     int experiencia; //tiene que ser >0 
 
     public:
-    Pokemon() {} //completar constructor
+    Pokemon(string nomb, int exp) : nombre(nomb), experiencia(exp) {} //completar constructor
+    /*
     void setNombre(string nomb) {nombre = nomb;}
     void setExperiencia(int exp);
-    string getNombre(){return nombre;}
-    int getExperiencia(){return experiencia;}
+    */
+    string getNombre() const {return nombre;}
+    int getExperiencia() const {return experiencia;}
+    
+    //sobrecargar operador == para compararlos como claves, osea para search
+    bool operator==(const Pokemon& poke) const{
+        return nombre == poke.nombre;
+    }
 
 };
 
@@ -23,18 +37,43 @@ class PokemonInfo{ // posee la info (composicion?)
     private:
     string tipo;
     string descripcion; 
-    // ataquesDisponiblesPorNivel: contenedor, nombre ataque y puntaje de dano (int)
-    // experienciaProximoNivel: cuanta experiencia se requiere para cada nivel
+    unordered_map<string, int> ataquesDisponiblesPorNivel; //busqueda eficiente en o1 en gral y no necesito orden, aparte no permite repetidos
+    array<int,3> experienciaProximoNivel; // uso array porque hay un numero fijo de elementos
     
     public:
+    PokemonInfo(string t, string descr, unordered_map<string, int> ataques, array<int,3>& experiencia) : tipo(t), descripcion(descr) {}
+    PokemonInfo(){}
+    /*    
+    string getTipo() const;
+    string getDescrpcion() const;
+    string getAtaquesString() const; //como imprimir unordered_map?
+    string getExperienciaProximoNivelString() const;
+    */
+
+    friend ostream& operator<<(ostream& os, const PokemonInfo& info); //sobrecarga usando friend
+
     
+
+
 };
 
-class Pokedex{ // contenedor principal para la info (??
-    private:
-    unordered_map<Pokemon, Pokedex> info;
-    //implementar metodo para que Pokemon pueda ser clave
-    // functor para hash usando solo el nombre del pokemon
-    void mostrar(Pokemon pok);
-    void mostrarTodos();
+class PokemonHash{
+    public:
+    size_t operator()(const Pokemon& poke) const {
+        return hash<string>()(poke.getNombre());
+    }
 };
+
+class Pokedex{ // contenedor principal para la info --> Composicion
+    private:
+    unordered_map<Pokemon, PokemonInfo, PokemonHash> pokedex; //se especifica pokemonhash como metodo de hashing para el map
+    //no permite claves repetidas!!! osea hay un pokemon por nombre
+    public:
+    //implementar metodos para que Pokemon pueda ser clave
+    Pokedex(){}
+
+    void agregarPokemon(const Pokemon& poke, const PokemonInfo& poke_info);
+    void mostrar(const Pokemon& poke) const; //funciona como un search + imprimir
+    //void mostrarTodos();
+};
+
