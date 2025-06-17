@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <array>
+#include <fstream>
 
 using namespace std;
 /*
@@ -44,6 +45,10 @@ class PokemonInfo{ // posee la info (composicion?)
     PokemonInfo(string t, string descr, unordered_map<string, int> ataques, array<int,3>& experiencia) : tipo(t), descripcion(descr), ataquesDisponiblesPorNivel(ataques), experienciaProximoNivel(experiencia) {}
     PokemonInfo(){}
 
+    string getTipo() const { return tipo;}
+    string getDescripcion()const {return descripcion;} 
+    unordered_map<string, int> getAtaques() const {return ataquesDisponiblesPorNivel;}
+    array<int, 3> getExperiencias() const {return experienciaProximoNivel;}
     friend ostream& operator<<(ostream& os, const PokemonInfo& info); //sobrecarga usando friend
 
 
@@ -59,13 +64,21 @@ class PokemonHash{
 class Pokedex{ // contenedor principal para la info --> Composicion
     private:
     unordered_map<Pokemon, PokemonInfo, PokemonHash> pokedex; //se especifica pokemonhash como metodo de hashing para el map
+    string archivo_info;
     //no permite claves repetidas!!! osea hay un pokemon por nombre
+
+    //void cargaInicialArchivo();
+    void agregarEnArchivo() const;
+
     public:
     //implementar metodos para que Pokemon pueda ser clave
     Pokedex(){}
+    Pokedex(string archivo): archivo_info(archivo) { leerDesdeArchivo();}
 
+    void leerDesdeArchivo();
     void agregarPokemon(const Pokemon& poke, const PokemonInfo& poke_info);
     void mostrar(const Pokemon& poke) const; //funciona como un search + imprimir
     void mostrarTodos() const;
+    //void cargarDesdeArchivo();
 };
 
