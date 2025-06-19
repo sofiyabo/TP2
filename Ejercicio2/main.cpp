@@ -19,5 +19,5 @@ int main() {
         t.join();
     }
 
-    return 0;   // Finalizamos el programa.
+    return 0;  
 }
