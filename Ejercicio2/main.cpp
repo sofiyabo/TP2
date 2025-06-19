@@ -4,8 +4,6 @@
 #include <chrono>
 #include "2.hpp"
 
-using namespace std;
-
 int main() {
     std::mutex consola;  // Mutex que protege el acceso al cout
     std::mutex sectores[5]; // array de mutex para las 5 zonas adyacentes
