@@ -1,4 +1,4 @@
-#include "2.hpp"
+#include "header2.hpp"
 
 Dron::Dron(int id, std::mutex* z1, std::mutex* z2, std::mutex& m)
     : identificador(id), zona1(z1), zona2(z2), mutexSalida(m) {}

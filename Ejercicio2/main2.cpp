@@ -2,7 +2,7 @@
 #include <thread>
 #include <mutex>
 #include <chrono>
-#include "2.hpp"
+#include "header2.hpp"
 
 int main() {
     std::mutex consola;  // Mutex que protege el acceso al cout
